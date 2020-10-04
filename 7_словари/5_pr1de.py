@@ -7,12 +7,13 @@ def main():
     length = []
     name = input("Введите имя файла (с расширением): ")
     amount = 0
-    dlina = 0
+   # dlina = 0 не используется вроде бы
     try:
         with open(name, encoding='utf-8') as f:
             text = f.read()
-            text = text.replace('-', '')
-            text = text.replace(',', '').replace('.', '')
+            punctuation = '.,&!@*()-?:;“”' # отсеивает больше знаков за те же три строчки, но и прошлая версия хорошо чистила текст
+            trans_table = str.maketrans({x: None for x in punctuation})
+            text = text.translate(trans_table)
             words = text.split()
             for word in words:
                 if word[-3:] == "ous":
@@ -20,7 +21,7 @@ def main():
                     wordlist.append(word)
                     length.append(len(word))
             print("Общее количество слов: ", amount)
-            print("Средняя частота: ", round(float(sum(length) / amount)))
+            print("Средняя длина: ", round(float(sum(length) / amount)))
     except FileNotFoundError as err_msg:
         print("Файла {} не существует.".format(name))
         print(err_msg)
